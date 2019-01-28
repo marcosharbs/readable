@@ -1,12 +1,7 @@
-import {
-    getCategories,
-    getPosts
-} from '../api/ReadableApi'
+import { getCategories, getPosts } from '../api/ReadableApi'
 import { receiveCategories } from '../actions/categories'
 import { receivePosts } from '../actions/posts'
-import { showLoading, 
-    hideLoading
-} from 'react-redux-loading'
+import { showLoading, hideLoading } from 'react-redux-loading'
 
 export const handleInitialData = () => (dispatch) => {
     dispatch(showLoading())

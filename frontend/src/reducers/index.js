@@ -8,5 +8,5 @@ export default combineReducers({
     categories,
     posts,
     comments,
-    loading: loadingBarReducer
+    loadingBar: loadingBarReducer
 })
