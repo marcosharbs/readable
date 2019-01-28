@@ -15,12 +15,6 @@ export const getPosts = async () => {
     const response = await client.get('/posts')
     const data = await response.data
     return data
-}
-
-export const getCategoryPosts = async (category) => {
-    const response = await client.get(`/${category}/posts`)
-    const data = await response.data
-    return data
 } 
 
 export const addPost = async (post) => {
