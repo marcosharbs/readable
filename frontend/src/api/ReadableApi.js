@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const client = axios.create({
     baseURL: 'http://localhost:3001',
-    headers: { 'Authorization': '123u2i1y' }
+    headers: { 'Authorization': 'q1w2e3r4' }
 })
 
 export const getCategories = async () => {

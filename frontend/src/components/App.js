@@ -4,6 +4,8 @@ import { handleInitialData } from '../actions/shared'
 import Header from './Header'
 import LoadingBar from 'react-redux-loading'
 import PostList from './PostList'
+import NewPost from './NewPost'
+import PostDetail from './PostDetail'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 class App extends Component {
@@ -18,13 +20,15 @@ class App extends Component {
         <LoadingBar />
         {this.props.loading === true
           ? null
-          : <div>
+          : <div style={{ backgroundColor: '#EEEEEE', minHeight: '100vh', height: '100%' }}>
               <BrowserRouter>
                 <Fragment>
                   <Header />
                   <Switch>
                     <Route path='/' exact component={PostList} />
-                    <Route path='/:category' exact component={PostList} /> 
+                    <Route path='/new' exact component={NewPost} />
+                    <Route path='/:category' exact component={PostList} />
+                    <Route path='/:category/:post_id' exact component={PostDetail} /> 
                   </Switch>
                 </Fragment>
               </BrowserRouter>

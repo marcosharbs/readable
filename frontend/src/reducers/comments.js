@@ -17,7 +17,7 @@ export default function comments(state = {}, action) {
         case ADD_COMMENT:
             return {
                 ...state,
-                [action.comment.parentId]: [...state[action.comment.parentId], action.comment]
+                [action.comment.parentId]: [...(state[action.comment.parentId] || []), action.comment]
             }
         case EDIT_COMMENT:
             return {

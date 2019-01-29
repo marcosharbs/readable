@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Grid, Select, MenuItem } from '@material-ui/core';
+import Post from './Post'
 
 class PostList extends Component {
 
@@ -61,8 +62,11 @@ class PostList extends Component {
                 </Grid>
                 <Grid item xs={12}>
                     {filteredPosts.length > 0 ? filteredPosts.map(post => (
-                        <p key={post.id}>{`${post.voteScore} - ${post.title}`}</p>
-                    )) : (<p>{'Posts not found!'}</p>)}
+                        <Post 
+                            key={post.id} 
+                            id={post.id} 
+                        />
+                    )) : (<h2 style={{ textAlign: 'center', marginTop: '50px'}}>{'Posts not found!'}</h2>)}
                 </Grid>
             </Grid>
         )
@@ -71,7 +75,7 @@ class PostList extends Component {
 }
 
 function mapStateToProps ({ posts }) {
-    return { posts }
+    return { posts: Object.values(posts) }
 }
 
 export default connect(mapStateToProps)(PostList)

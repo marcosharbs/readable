@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export function UUID() {
     var d = new Date().getTime();
     if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
@@ -9,4 +11,15 @@ export function UUID() {
         // eslint-disable-next-line
         return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
+}
+
+export function arrayToObject(propertyName, array) {
+    var rv = {};
+    for (var i = 0; i < array.length; ++i)
+        rv[array[i][propertyName]] = array[i];
+    return rv;
+}
+
+export function formatDate(timestamp) {
+    return moment(timestamp).format('DD/MM/YYYY HH:mm')
 }

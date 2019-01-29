@@ -22,7 +22,7 @@ function addPost(post) {
     return { type: ADD_POST, post }
 }
 
-export const handleAddPost = (title, body, author, category) => (dispatch) => {
+export const handleAddPost = (title, body, author, category, callback) => (dispatch) => {
     return addPostApi({
         id: UUID(),
         timestamp: Date.now(),
@@ -31,29 +31,38 @@ export const handleAddPost = (title, body, author, category) => (dispatch) => {
         author,
         category
     })
-    .then(post => dispatch(addPost(post)))
+    .then(post => {
+        dispatch(addPost(post))
+        callback()
+    })
 }
 
 function editPost(post) {
     return { type: EDIT_POST, post }
 }
 
-export const handleEditPost = (id, title, body) => (dispatch) => {
+export const handleEditPost = (id, title, body, callback) => (dispatch) => {
     return editPostApi(
         id, 
         title, 
         body
     )
-    .then(post => dispatch(editPost(post)))
+    .then(post => {
+        dispatch(editPost(post))
+        callback()
+    })
 }
 
 function deletePost(id) {
     return { type: DELETE_POST, id }
 }
 
-export const handleDeletePost = (id) => (dispatch) => {
+export const handleDeletePost = (id, callback) => (dispatch) => {
     return deletePostApi(id)
-    .then(post => dispatch(deletePost(post.id)))
+    .then(post => {
+        dispatch(deletePost(post.id))
+        callback()
+    })
 }
 
 function votePostUp(id) {

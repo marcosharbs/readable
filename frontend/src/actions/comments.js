@@ -28,7 +28,7 @@ function addComment(comment) {
     return { type: ADD_COMMENT, comment }
 }
 
-export const handleAddComment = (body, author, postId) => (dispatch) => {
+export const handleAddComment = (body, author, postId, callback) => (dispatch) => {
     return addCommenttApi({
         id: UUID(),
         timestamp: Date.now(),
@@ -36,20 +36,26 @@ export const handleAddComment = (body, author, postId) => (dispatch) => {
         author,
         parentId: postId
     })
-    .then(comment => dispatch(addComment(comment)))
+    .then(comment => {
+        dispatch(addComment(comment))
+        callback()
+    })
 }
 
 function editComment(comment) {
     return { type: EDIT_COMMENT, comment }
 }
 
-export const handleEditComment = (id, body) => (dispatch) => {
+export const handleEditComment = (id, body, callback) => (dispatch) => {
     return editCommenttApi(
         id, 
         Date.now(), 
         body
     )
-    .then(comment => dispatch(editComment(comment)))
+    .then(comment => {
+        dispatch(editComment(comment))
+        callback()
+    })
 }
 
 function deleteComment(postId, id) {
