@@ -13,17 +13,17 @@ const NewComment = (props) => {
         document.getElementById('comment_message').value = ''
     }
     
-    const saveComment = (event) => {
+    const onSaveComment = (event) => {
         event.preventDefault()
 
-        const { postId, dispatch } = props
+        const { postId, saveComment } = props
 
         const author = document.getElementById('comment_author').value
         const message = document.getElementById('comment_message').value
 
-        dispatch(handleAddComment(message, author, postId, () => {
+        saveComment(message, author, postId, () => {
             clearFields()
-        }))
+        })
     }
 
     return (
@@ -34,7 +34,7 @@ const NewComment = (props) => {
                 marginTop: '40px' 
             }}>
             <h3>New Comment</h3>
-            <form onSubmit={saveComment}>
+            <form onSubmit={onSaveComment}>
                 <div>
                     <TextField
                         id={`comment_author`}
@@ -70,4 +70,12 @@ const NewComment = (props) => {
     )
 }
 
-export default connect()(NewComment)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveComment: (message, author, postId, callback) => {
+            dispatch(handleAddComment(message, author, postId, callback))
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(NewComment)

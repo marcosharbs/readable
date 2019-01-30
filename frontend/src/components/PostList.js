@@ -74,7 +74,7 @@ class PostList extends Component {
 
 }
 
-function mapStateToProps ({ posts }) {
+const mapStateToProps = ({ posts }) => {
     return { posts: Object.values(posts) }
 }
 

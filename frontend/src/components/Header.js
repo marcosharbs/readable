@@ -30,7 +30,7 @@ const Header = (props) => {
     )
 }
 
-function mapStateToProps ({ categories }) {
+const mapStateToProps = ({ categories }) => {
     return { categories }
 }
 

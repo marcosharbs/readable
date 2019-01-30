@@ -11,7 +11,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 class App extends Component {
 
   componentDidMount() {
-    this.props.dispatch(handleInitialData())
+    const { getInitialData } = this.props
+    getInitialData()
   }
 
   render() {
@@ -39,10 +40,18 @@ class App extends Component {
   }
 }
 
-function mapStateToProps ({ categories }) {
+const mapStateToProps = ({ categories }) => {
   return {
     loading: categories.length === 0
   }
 }
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getInitialData: () => {
+      dispatch(handleInitialData())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

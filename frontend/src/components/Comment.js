@@ -35,31 +35,31 @@ class Comment extends Component {
         this.setState({ editMode: !editMode })
     }
 
-    voteUp = () => {
-        const { comment, dispatch } = this.props
-        dispatch(handleVoteCommentUp(comment.parentId, comment.id))
+    onVoteUp = () => {
+        const { comment, voteUp } = this.props
+        voteUp(comment)
     }
 
-    voteDown = () => {
-        const { comment, dispatch } = this.props
-        dispatch(handleVoteCommentDown(comment.parentId, comment.id))
+    onVoteDown = () => {
+        const { comment, voteDown } = this.props
+        voteDown(comment)
     }
 
-    deleteComment = () => {
-        const { comment, dispatch } = this.props
-        dispatch(handleDeleteComment(comment.parentId, comment.id))
+    onDeleteComment = () => {
+        const { comment, deleteComment } = this.props
+        deleteComment(comment)
     }
 
-    editComment = (event) => {
+    onEditComment = (event) => {
         event.preventDefault()
 
-        const { comment, dispatch } = this.props
+        const { comment, editComment } = this.props
 
         const body = document.getElementById(`comment_message_${comment.id}`).value
 
-        dispatch(handleEditComment(comment.id, body, () => {
+        editComment(comment.id, body, () => {
             this.toggleEditMode()
-        }))
+        })
     }
 
     render() {
@@ -70,7 +70,7 @@ class Comment extends Component {
             <Card style={{ marginTop: '10px', marginLeft: 'auto', marginRight: 'auto' }}>
                 {editMode === true 
                     ? (
-                        <form onSubmit={this.editComment} style={{ margin: '20px' }}>
+                        <form onSubmit={this.onEditComment} style={{ margin: '20px' }}>
                             <div>
                                 <TextField
                                     id={`comment_message_${comment.id}`}
@@ -107,11 +107,11 @@ class Comment extends Component {
                             </CardContent>
                             <CardActions>
                                 <div>
-                                    <IconButton color="inherit" onClick={this.voteDown}>
+                                    <IconButton color="inherit" onClick={this.onVoteDown}>
                                         <ArrowDropDown color="inherit" />
                                     </IconButton>
                                     {comment.voteScore}
-                                    <IconButton color="inherit" onClick={this.voteUp}>
+                                    <IconButton color="inherit" onClick={this.onVoteUp}>
                                         <ArrowDropUp color="inherit" />
                                     </IconButton>
                                 </div>
@@ -119,7 +119,7 @@ class Comment extends Component {
                                     <IconButton aria-label="Edit" onClick={this.toggleEditMode}>
                                         <Edit />
                                     </IconButton>
-                                    <IconButton aria-label="Delete" onClick={this.deleteComment}>
+                                    <IconButton aria-label="Delete" onClick={this.onDeleteComment}>
                                         <Delete />
                                     </IconButton>
                                 </div>
@@ -132,4 +132,21 @@ class Comment extends Component {
 
 }
 
-export default connect()(Comment)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        voteUp: (comment) => {
+            dispatch(handleVoteCommentUp(comment.parentId, comment.id))
+        },
+        voteDown: (comment) => {
+            dispatch(handleVoteCommentDown(comment.parentId, comment.id))
+        },
+        deleteComment: (comment) => {
+            dispatch(handleDeleteComment(comment.parentId, comment.id))
+        },
+        editComment: (id, body, callback) => {
+            dispatch(handleEditComment(id, body, callback))
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Comment)

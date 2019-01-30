@@ -37,36 +37,36 @@ class Post extends Component {
         this.setState({ editMode: !editMode })
     }
 
-    voteUp = () => {
-        const { id, dispatch } = this.props
-        dispatch(handleVotePostUp(id))
+    onVoteUp = () => {
+        const { id, voteUp } = this.props
+        voteUp(id)
     }
 
-    deletePost = () => {
-        const { id, redirectOnDelete, dispatch, history } = this.props
-        dispatch(handleDeletePost(id, () => {
+    onDeletePost = () => {
+        const { id, redirectOnDelete, deletePost, history } = this.props
+        deletePost(id, () => {
             if(redirectOnDelete === true) {
                 history.push('/')
             }
-        }))
+        })
     }
 
-    voteDown = () => {
-        const { id, dispatch } = this.props
-        dispatch(handleVotePostDown(id))
+    onVoteDown = () => {
+        const { id, voteDown } = this.props
+        voteDown(id)
     }
 
-    editPost = (event) => {
+    onEditPost = (event) => {
         event.preventDefault()
 
-        const { id, dispatch } = this.props
+        const { id, editPost } = this.props
 
         const title = document.getElementById(`post_title_${id}`).value
         const body = document.getElementById(`post_body_${id}`).value
 
-        dispatch(handleEditPost(id, title, body, () => {
+        editPost(id, title, body, () => {
             this.toggleEditMode()
-        }))
+        })
     }
 
     render() {
@@ -79,7 +79,7 @@ class Post extends Component {
             <Card style={{ maxWidth: 800, marginTop: '20px', marginLeft: 'auto', marginRight: 'auto' }}>
                 {editMode === true 
                     ? (
-                        <form onSubmit={this.editPost} style={{ margin: '20px' }}>
+                        <form onSubmit={this.onEditPost} style={{ margin: '20px' }}>
                             <div>
                                 <TextField
                                     id={`post_title_${post.id}`}
@@ -131,11 +131,11 @@ class Post extends Component {
                                     <span style={{ marginLeft: '10px' }}>{`${post.commentCount} comments`}</span>
                                 </div>
                                 <div>
-                                    <IconButton color="inherit" onClick={this.voteDown}>
+                                    <IconButton color="inherit" onClick={this.onVoteDown}>
                                         <ArrowDropDown color="inherit" />
                                     </IconButton>
                                     {post.voteScore}
-                                    <IconButton color="inherit" onClick={this.voteUp}>
+                                    <IconButton color="inherit" onClick={this.onVoteUp}>
                                         <ArrowDropUp color="inherit" />
                                     </IconButton>
                                 </div>
@@ -143,7 +143,7 @@ class Post extends Component {
                                     <IconButton aria-label="Edit" onClick={this.toggleEditMode}>
                                         <Edit />
                                     </IconButton>
-                                    <IconButton aria-label="Delete" onClick={this.deletePost}>
+                                    <IconButton aria-label="Delete" onClick={this.onDeletePost}>
                                         <Delete />
                                     </IconButton>
                                 </div>
@@ -156,8 +156,25 @@ class Post extends Component {
 
 }
 
-function mapStateToProps ({ posts }) {
+const mapStateToProps = ({ posts }) => {
     return { posts: Object.values(posts) }
 }
 
-export default withRouter(connect(mapStateToProps)(Post))
+const mapDispatchToProps = (dispatch) => {
+    return {
+        voteUp: (id) => {
+            dispatch(handleVotePostUp(id))
+        },
+        deletePost: (id, callback) => {
+            dispatch(handleDeletePost(id, callback))
+        },
+        voteDown: (id) => {
+            dispatch(handleVotePostDown(id))
+        },
+        editPost: (id, title, body, callback) => {
+            dispatch(handleEditPost(id, title, body, callback))
+        }
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Post))

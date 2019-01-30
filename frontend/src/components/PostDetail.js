@@ -8,8 +8,8 @@ import { handleGetComments } from '../actions/comments'
 class PostDetail extends Component {
 
     componentDidMount() {
-        const { postId, dispatch } = this.props
-        dispatch(handleGetComments(postId))
+        const { postId, getComments } = this.props
+        getComments(postId)
     }
 
     render() {
@@ -60,7 +60,7 @@ class PostDetail extends Component {
     
 }
 
-function mapStateToProps ({ posts, comments }, props) {
+const mapStateToProps = ({ posts, comments }, props) => {
 
     const postsArray = Object.values(posts) 
     const postId = props.match.params.post_id
@@ -73,4 +73,12 @@ function mapStateToProps ({ posts, comments }, props) {
     }
 }
 
-export default connect(mapStateToProps)(PostDetail)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getComments: (postId) => {
+            dispatch(handleGetComments(postId))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostDetail)

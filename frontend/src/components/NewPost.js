@@ -24,15 +24,15 @@ class NewPost extends Component {
         this.setState({ [name]: value })
     }
 
-    savePost = (event) => {
+    onSavePost = (event) => {
         event.preventDefault()
 
         const { title, body, author, category } = this.state
-        const { dispatch } = this.props
+        const { savePost } = this.props
 
-        dispatch(handleAddPost(title, body, author, category, () => {
+        savePost(title, body, author, category, () => {
             this.goToHome()
-        }))
+        })
     }
 
     goToHome = () => {
@@ -45,7 +45,7 @@ class NewPost extends Component {
         const canSave = title && body && author && category
 
         return (
-            <form style={{ margin: '20px' }} onSubmit={this.savePost}>
+            <form style={{ margin: '20px' }} onSubmit={this.onSavePost}>
                 <h3>New Post</h3>
                 <div>
                     <TextField
@@ -113,8 +113,16 @@ class NewPost extends Component {
 
 }
 
-function mapStateToProps({ categories }) {
+const mapStateToProps = ({ categories }) => {
     return { categories }
 }
 
-export default withRouter(connect(mapStateToProps)(NewPost))
+const mapDispatchToProps = (dispatch) => {
+    return {
+        savePost: (title, body, author, category, callback) => {
+            dispatch(handleAddPost(title, body, author, category, callback))
+        }
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NewPost))
