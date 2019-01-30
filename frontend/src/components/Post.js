@@ -44,7 +44,8 @@ class Post extends Component {
 
     onDeletePost = () => {
         const { id, redirectOnDelete, deletePost, history } = this.props
-        deletePost(id, () => {
+        deletePost(id)
+        .then(() => {
             if(redirectOnDelete === true) {
                 history.push('/')
             }
@@ -64,9 +65,8 @@ class Post extends Component {
         const title = document.getElementById(`post_title_${id}`).value
         const body = document.getElementById(`post_body_${id}`).value
 
-        editPost(id, title, body, () => {
-            this.toggleEditMode()
-        })
+        editPost(id, title, body)
+        .then(() => this.toggleEditMode())
     }
 
     render() {
@@ -165,14 +165,14 @@ const mapDispatchToProps = (dispatch) => {
         voteUp: (id) => {
             dispatch(handleVotePostUp(id))
         },
-        deletePost: (id, callback) => {
-            dispatch(handleDeletePost(id, callback))
+        deletePost: (id) => {
+            return dispatch(handleDeletePost(id))
         },
         voteDown: (id) => {
             dispatch(handleVotePostDown(id))
         },
-        editPost: (id, title, body, callback) => {
-            dispatch(handleEditPost(id, title, body, callback))
+        editPost: (id, title, body) => {
+            return dispatch(handleEditPost(id, title, body))
         }
     }
 }

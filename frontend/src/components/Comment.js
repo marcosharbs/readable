@@ -57,9 +57,8 @@ class Comment extends Component {
 
         const body = document.getElementById(`comment_message_${comment.id}`).value
 
-        editComment(comment.id, body, () => {
-            this.toggleEditMode()
-        })
+        editComment(comment.id, body)
+        .then(() => this.toggleEditMode())
     }
 
     render() {
@@ -143,8 +142,8 @@ const mapDispatchToProps = (dispatch) => {
         deleteComment: (comment) => {
             dispatch(handleDeleteComment(comment.parentId, comment.id))
         },
-        editComment: (id, body, callback) => {
-            dispatch(handleEditComment(id, body, callback))
+        editComment: (id, body) => {
+            return dispatch(handleEditComment(id, body))
         }
     }
 }

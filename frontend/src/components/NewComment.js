@@ -21,9 +21,8 @@ const NewComment = (props) => {
         const author = document.getElementById('comment_author').value
         const message = document.getElementById('comment_message').value
 
-        saveComment(message, author, postId, () => {
-            clearFields()
-        })
+        saveComment(message, author, postId)
+        .then(() => clearFields())
     }
 
     return (
@@ -72,8 +71,8 @@ const NewComment = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        saveComment: (message, author, postId, callback) => {
-            dispatch(handleAddComment(message, author, postId, callback))
+        saveComment: (message, author, postId) => {
+            return dispatch(handleAddComment(message, author, postId))
         }
     }
 }

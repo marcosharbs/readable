@@ -1,7 +1,7 @@
 import {
     getComments as getCommentsApi, 
     addComment as addCommenttApi,
-    editComment as editCommenttApi,
+    editComment as editCommentApi,
     deleteComment as deleteCommentApi,
     upVoteComment as voteCommentUpApi,
     downVoteComment as voteCommentDownApi
@@ -28,7 +28,7 @@ function addComment(comment) {
     return { type: ADD_COMMENT, comment }
 }
 
-export const handleAddComment = (body, author, postId, callback) => (dispatch) => {
+export const handleAddComment = (body, author, postId) => (dispatch) => {
     return addCommenttApi({
         id: UUID(),
         timestamp: Date.now(),
@@ -36,26 +36,20 @@ export const handleAddComment = (body, author, postId, callback) => (dispatch) =
         author,
         parentId: postId
     })
-    .then(comment => {
-        dispatch(addComment(comment))
-        callback()
-    })
+    .then(comment => dispatch(addComment(comment)))
 }
 
 function editComment(comment) {
     return { type: EDIT_COMMENT, comment }
 }
 
-export const handleEditComment = (id, body, callback) => (dispatch) => {
-    return editCommenttApi(
+export const handleEditComment = (id, body) => (dispatch) => {
+    return editCommentApi(
         id, 
         Date.now(), 
         body
     )
-    .then(comment => {
-        dispatch(editComment(comment))
-        callback()
-    })
+    .then(comment => dispatch(editComment(comment)))
 }
 
 function deleteComment(postId, id) {

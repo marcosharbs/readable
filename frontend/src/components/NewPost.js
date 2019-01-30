@@ -30,9 +30,8 @@ class NewPost extends Component {
         const { title, body, author, category } = this.state
         const { savePost } = this.props
 
-        savePost(title, body, author, category, () => {
-            this.goToHome()
-        })
+        savePost(title, body, author, category)
+        .then(() => this.goToHome())
     }
 
     goToHome = () => {
@@ -119,8 +118,8 @@ const mapStateToProps = ({ categories }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        savePost: (title, body, author, category, callback) => {
-            dispatch(handleAddPost(title, body, author, category, callback))
+        savePost: (title, body, author, category) => {
+            return dispatch(handleAddPost(title, body, author, category))
         }
     }
 }
